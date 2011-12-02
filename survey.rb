@@ -1,6 +1,6 @@
 require 'zlib'
 
-module ThinkingStats
+module ThinkStats
   class Record
   end
 
@@ -136,11 +136,11 @@ module ThinkingStats
 end
 
 def main(data_dir = File.dirname(__FILE__))
-  respondents = ThinkingStats::Respondents.new
+  respondents = ThinkStats::Respondents.new
   respondents.read_records(data_dir)
   puts "Number of respondents: #{respondents.length}"
   
-  pregnancies = ThinkingStats::Pregnancies.new
+  pregnancies = ThinkStats::Pregnancies.new
   pregnancies.read_records(data_dir)
   puts "Number of pregnancies: #{pregnancies.length}"
 end
