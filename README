@@ -1,0 +1,4 @@
+Thinking Stats (in Ruby)
+========================
+
+This is a ruby implementation of all the code in the book Thinking Stats by Allen B. Downey.  It is to help Ruby programmers who are not comfortable reading Python to follow along with the book and learn statistical techniques and programming.
