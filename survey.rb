@@ -140,4 +140,6 @@ def main(data_dir = File.dirname(__FILE__))
   puts "Number of pregnancies: #{pregnancies.length}"
 end
 
-main(*ARGV)
+if __FILE__ == $0
+  main(*ARGV)
+end
