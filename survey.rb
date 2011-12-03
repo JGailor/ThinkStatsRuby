@@ -1,5 +1,15 @@
 require 'zlib'
 
+class Array
+  def sum
+    self.inject(0) {|acc, val| acc += val}
+  end
+  
+  def average
+    self.sum.to_f / self.size
+  end
+end
+
 module ThinkStats
   class Record
   end
