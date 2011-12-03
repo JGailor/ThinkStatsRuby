@@ -1,4 +1,4 @@
-$: << File.dirname(__FILE__)
+$: << File.join(File.dirname(__FILE__), "..")
 require 'survey'
 
 pregnancies = ThinkStats::Pregnancies.new
