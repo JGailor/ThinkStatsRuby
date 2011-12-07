@@ -4,7 +4,7 @@ module ThinkStats
     
     def initialize(hash = nil, name = '')
       if hash.kind_of?(Array)
-        @hash = hash.inject(Hash.new {|h,k| h[k] = 0}) {|hash, value| hash[value] += 1}
+        @hash = hash.inject({}) {|hash, value| hash[value] ? hash[value] += 1 : hash[value] = 1; hash}
       else
         @hash = hash || {}
       end
@@ -66,6 +66,14 @@ module ThinkStats
       @hash.values
     end
     
+    def mode
+      @hash.max {|(a_key, a_val), (b_key, b_val)| a_val <=> b_val}.first
+    end
+    
+    def all_modes
+      @hash.sort {|(a_key, a_val), (b_key, b_val)| b_val <=> a_val}
+    end
+    
     def subset?(other)
       @hash.all? {|value, frequency| other.freq(value) == frequency}
     end
@@ -120,33 +128,33 @@ module ThinkStats
   
   # These helpers are here because they are in the python source... I don't get the need for them, but
   # for completeness sake, here you go.
-  def make_hist_from_list(list, name = '')
+  def self.make_hist_from_list(list, name = '')
     Histogram.new(list, name)
   end
   
-  def make_hist_from_dict(dict, name = '')
+  def self.make_hist_from_dict(dict, name = '')
     Histogram.new(dict, name)
   end
   
-  def make_pmf_from_histogram(histogram, name = '')
+  def self.make_pmf_from_histogram(histogram, name = '')
     name = name || histogram.name
-    Pmf.new(histogram.hash.clone, name).tap |pmf|
+    Pmf.new(histogram.hash.clone, name).tap do |pmf|
       pmf.normalize
     end
   end
   
-  def make_pmf_from_list(list, name = '')
+  def self.make_pmf_from_list(list, name = '')
     make_pmf_from_histogram(make_histogram_from_list(list, name))
   end
   
-  def make_pmf_from_hash(hash, name = '')
+  def self.make_pmf_from_hash(hash, name = '')
     Pmf.new(hash, name).tap do |pmf|
       pmf.normalize
     end
   end
   
   # I have no idea what a CDF is at this point, hoping it respects the interface
-  def make_pmf_from_cdf(cdf, name = '')
+  def self.make_pmf_from_cdf(cdf, name = '')
     name = name || cdf.name
     Pmf.new({}, name).tap do |pmf|
       prev = 0.0
@@ -157,7 +165,7 @@ module ThinkStats
     end
   end
   
-  def make_mixture(pmfs, name = 'mix')
+  def self.make_mixture(pmfs, name = 'mix')
     Pmf.new({}, name).tap do |mix|
       pmfs.each do |pmf, prob|
         pmf.hash.each do |x, p|
